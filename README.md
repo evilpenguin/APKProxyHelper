@@ -1,11 +1,11 @@
-# AndroidProxyHelper
-AndroidProxyHelper paches an apk for proxying.
+# APKProxyHelper
+APKProxyHelper paches an apk for proxying.
 
 Usage
 ----------
 ```
-$ python3 aph.py -h                                                
-usage: aph [-h] --apk APK
+$ python3 aph.py -h                                                      
+usage: APKProxyHelper [-h] --apk APK
 
 optional arguments:
   -h, --help         show this help message and exit
