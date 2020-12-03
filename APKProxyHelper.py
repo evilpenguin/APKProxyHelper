@@ -10,7 +10,8 @@ import shutil
 from xml.etree import ElementTree
 
 class APKProxyHelper():
-    def __init__(self, apk_path):
+    def __init__(self, apk_path, apktool_version):
+        self.apktool_version = apktool_version
         self.apk = os.path.normpath(os.path.expanduser(apk_path))
         self.file_name = os.path.splitext(os.path.basename(self.apk))[0]
         self.apktool_output = self.apk.replace(".apk", "")
@@ -28,6 +29,15 @@ class APKProxyHelper():
             self._clean_up()
         
     # Private methods
+    
+    def _apktool_path(self):
+        if "2.5.1" in self.apktool_version:
+            return "apktool/apktool_2.5.0.jar"
+        elif "2.4.1" in self.apktool_version:
+            return "apktool/apktool_2.4.1.jar"
+
+        return None
+
     def _run_command(self, command):
         command_string = " ".join(command)
 
@@ -53,7 +63,7 @@ class APKProxyHelper():
         self._run_command(command=[
             "java", 
             "-jar",
-            "apktool_2.4.1.jar",
+            self._apktool_path(),
             "-f",
             "d",
             '"{}"'.format(self.apk),
@@ -94,7 +104,7 @@ class APKProxyHelper():
         
         self._run_command(command=[
             "java",
-            "-jar", "apktool_2.4.1.jar",
+            "-jar", self._apktool_path(),
             "-f",
             "b",
             '"{}"'.format(self.apktool_output),
@@ -118,5 +128,8 @@ class APKProxyHelper():
             ])
 
     def _clean_up(self):
-        print("[*] Cleaing up directory {}".format(self.apktool_output))
-        shutil.rmtree(self.apktool_output)
+        try:
+            print("[*] Cleaing up directory {}".format(self.apktool_output))
+            shutil.rmtree(self.apktool_output)
+        except OSError as e:
+            pass
