@@ -4,12 +4,13 @@ APKProxyHelper paches an apk for proxying.
 Usage
 ----------
 ```
-$ python3 aph.py -h                                                      
-usage: APKProxyHelper [-h] --apk APK
+$ python3 aph.py -h                                                                
+usage: APKProxyHelper [-h] --apk APK [--apktool APKTOOL]
 
 optional arguments:
-  -h, --help         show this help message and exit
-  --apk APK, -a APK  The path to the apk file
+  -h, --help            show this help message and exit
+  --apk APK, -a APK     The path to the apk file
+  --apktool APKTOOL, -atv APKTOOL
 ```
 
 Output
