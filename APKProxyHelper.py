@@ -92,8 +92,22 @@ class APKProxyHelper():
             if tree is not None:
                 root = tree.getroot()
                 if root is not None:
+                    # Add network security config
                     application = root.find("application")
                     application.set("{http://schemas.android.com/apk/res/android}networkSecurityConfig", "@xml/network_security_config")
+                    
+                    # Update targetSdkVersion for Android 14+ compatibility
+                    uses_sdk = root.find("uses-sdk")
+                    if uses_sdk is not None:
+                        target_sdk = uses_sdk.get("{http://schemas.android.com/apk/res/android}targetSdkVersion")
+                        if target_sdk:
+                            try:
+                                target_sdk_int = int(target_sdk)
+                                if target_sdk_int < 24:
+                                    print("[*] Updating targetSdkVersion from {} to 24 for Android 14+ compatibility".format(target_sdk))
+                                    uses_sdk.set("{http://schemas.android.com/apk/res/android}targetSdkVersion", "24")
+                            except ValueError:
+                                print("[!] Warning: Could not parse targetSdkVersion: {}".format(target_sdk))
                 
                     with open(xml_path, "wb") as xml_file:
                         xml_file.write('<?xml version="1.0" encoding="utf-8" standalone="no"?>'.encode())
